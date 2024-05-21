@@ -1,0 +1,326 @@
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: var(--bg);
+}
+
+.sm {
+  font-size: 15px;
+}
+
+.md {
+  font-size: 20px;
+}
+
+.lg {
+  font-size: 50px;
+}
+
+.bold-author {
+  font-weight: 500;
+}
+
+/* aside */
+
+.sidebar-container {
+  background-color: #4a6473;
+  min-height: 100vh;
+  width: 25vw;
+  color: #fff;
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+}
+
+.logo {
+  width: 25vw;
+  height: 13vh;
+  margin: 5px;
+}
+.logo .img-container {
+  width: 100px;
+  height: 80%;
+}
+
+.logo .img-container img {
+  height: 100%;
+}
+
+.logo h4 {
+  font-weight: 700;
+  margin: auto 5px;
+}
+
+.acc-list {
+  padding: 0.3rem 1.4rem;
+}
+
+.border-container {
+  padding: 7px 5px;
+  border: 1px solid #fff;
+  text-align: center;
+  font-weight: 600;
+}
+
+.main-list {
+  padding: 0 1.8rem;
+}
+
+.main-list p {
+  font-weight: 600;
+  padding: 0.1rem;
+}
+
+.line {
+  content: "";
+  background-color: #fff;
+  margin: 0 auto;
+  width: 90%;
+  height: 2px;
+  border-radius: 2px;
+}
+
+footer {
+  font-size: 11px;
+}
+
+.back {
+  color: #4a6473;
+}
+
+/* Login Page */
+header .container-fluid {
+  background-color: #4a6473;
+  height: 100vh;
+}
+
+header .jumbotron {
+  height: 100vh;
+  padding: 0;
+}
+
+.jumbotron .image-background {
+  background-image: url("../img/jumbotron.png");
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+  width: 100%;
+}
+
+header .input-content {
+  height: 100%;
+  background-color: #fffbf2;
+  color: #fff;
+}
+
+header .input-login {
+  border-bottom: 1px solid black;
+}
+
+header .hero-content {
+  width: 70%;
+}
+
+header .btn {
+  background-color: #4a6473;
+  width: 8rem;
+}
+
+header .btn:hover {
+  background-color: #4a6473;
+}
+
+/* Navbar */
+/* 
+  .navbar {
+    width: 100%;
+    background-color: #4a6473;
+    height: 90px;
+    position: fixed;
+    right: 0;
+    left: 290px;
+  } */
+
+/* Main */
+
+/* .main-container {
+    position: relative;
+    background-color: red;
+    height: 100%;
+    width: 100vw;
+  } */
+.containers {
+  position: absolute;
+  right: 0;
+  width: 75vw;
+  height: 100vh;
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 75vw;
+  height: 13vh;
+  background: #4a6473;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.nav {
+  width: 90%;
+  display: flex;
+  align-items: center;
+}
+
+.search {
+  flex: 5;
+  display: flex;
+  align-items: center;
+}
+
+.search input {
+  width: 60%;
+  border: 1px solid #fff;
+  background-color: transparent;
+  padding: 10px;
+  outline: none;
+}
+
+.search input::placeholder {
+  color: #fff;
+}
+
+.content {
+  background-color: #fffbf2;
+  min-height: 87vh;
+  /* z-index: -1; */
+}
+
+.img-container {
+  width: 60px;
+  height: 70px;
+  border: none;
+  outline: none;
+}
+.img-container img {
+  width: 100%;
+}
+
+.card {
+  max-width: 65%;
+}
+.card img {
+  width: 100%;
+  height: 80%;
+}
+
+/* forum */
+
+.image-heading {
+  height: 11rem;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.image-heading img {
+  object-fit: cover;
+}
+
+.forum {
+  background-color: #ffffff;
+}
+
+.btn-create {
+  background-color: #4a6473;
+  color: #fff;
+  width: 7rem;
+  transition: transform 0.2s ease-in-out;
+}
+
+.btn-create:hover {
+  background-color: #4a6473;
+  color: #fff;
+  transform: scale(1.1);
+}
+
+.card-forum {
+  cursor: pointer;
+}
+
+.auto-resize {
+  overflow: hidden;
+  resize: none;
+}
+
+.circle-img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+@media screen and (max-width: 768px) {
+  p.sm {
+    font-size: 10px;
+  }
+
+  .search input {
+    width: 100%;
+  }
+
+  .acc-list,
+  .main-list {
+    padding: 0.2rem 0.4rem;
+  }
+
+  .card {
+    margin-top: 0;
+  }
+  .card,
+  .card h6,
+  .card h4,
+  p {
+    max-width: 100%;
+    font-size: smaller;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .containers {
+    width: 88vw;
+  }
+  .list-name {
+    justify-content: center;
+  }
+  .sidebar-container {
+    width: 12vw;
+  }
+
+  .logo .img-container {
+    width: 40px;
+    height: 40px;
+  }
+
+  .logo .img-container img {
+    height: 100%;
+  }
+
+  .header {
+    width: 88vw;
+    height: 8vh;
+    font-size: 10px;
+  }
+
+  .search input {
+    height: 4vh;
+  }
+
+  .btn {
+    font-size: 8px;
+  }
+}

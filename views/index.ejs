@@ -1,0 +1,109 @@
+<%- layout('layouts/app') %>
+
+<div class="content position-relative d-flex flex-column" >
+  <h1>-</h1>
+  <% forums.forEach(forum => { %>
+
+  <div class="card px-2 m-5 mb-2 shadow" >
+    <div class="card-body pb-5">
+      <div class="profile-container d-flex mb-2">
+        <div class="img-container">
+    
+          <% if (forum.author.image && forum.isAnonymous === false) { %>
+            <img src="/uploads/<%= forum.author.image %>" class="img-thumbnail img-fluid circle-img" alt="..." class="">
+            <% } else { %>
+              
+              <img src="/img/profile-1.jpg" class="img-thumbnail img-fluid circle-img" alt="..." class="">
+
+            <% } %>
+        </div>
+
+        <h6 class="mx-2 mt-3">
+          <%= forum.isAnonymous? "Anonymous": forum.author.name %>
+          <% if (forum.author.role && forum.author.role === "verify" && !forum.isAnonymous) { %>
+              <i class="bi bi-patch-check-fill mt-1 text-primary ms-2"></i>
+          <% } %>
+        </h6>
+
+        <p class="sm ms-auto mt-1 text-secondary date mt-3"><%= forum.created_at.toLocaleDateString("id-ID", {day: "numeric",
+          month:"long", year:"numeric"}) %></p>
+
+        <!-- <i class="bi bi-patch-check-fill mt-1 text-primary"></i> -->
+        
+        <% if (forum.author._id.toString() === userId) { %>
+        <div class="btn-group mb-3">
+          <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-three-dots-vertical fw-bold"></i>
+          </button>
+          <ul class="dropdown-menu">
+            <li>
+              <form action="/forum/<%= forum._id %>/edit" method="GET" class="dropdown-item ms-0">
+              <button class="btn">Edit</button>
+              </form>
+            </li>
+            <li>
+              <form action="/forum/<%= forum._id %>/delete?_method=DELETE" method="POST" class="dropdown-item">
+                <button class="btn" onclick="return confirm('Are You Sure?')">Delete</button></form>
+            </li>
+          </ul>
+        </div>
+
+        <% } %>
+      </div>
+     
+
+      <div class="card-forum" data-forumslug="<%= forum.slug %>">
+
+        <h4 class="card-title fw-bold"><%= forum.title %></h4>
+        <p class="card-text"><%= forum.description %></p>
+      </div>
+    </div>
+
+    <% if (forum.image.length >= 1) { %>
+
+      <div class="image-heading">
+
+        <img src="/uploads/<%= forum.image[0]%>" class="card-img-top" alt="" />
+        
+      </div>
+
+      <% } %>
+
+    <div class="button-post d-flex p-3  ">
+      <div
+        class="button-logo d-flex me-4 forum-id"
+        data-forumid="<%= forum._id %>"
+      >
+      <i class="bi bi-heart-fill like-button text-danger <%= (forum.liked_by.map(user => user._id.toString()).includes(userId))? "":"d-none" %>"></i>
+      <i class="bi bi-heart unlike-button <%= ( forum.liked_by.map(user => user._id.toString()).includes(userId))? "d-none":"" %>">%></i>
+      <p class="like-count ms-2"
+        ><%= forum.liked_by.length  %></p
+      >   
+      </div>
+
+      <div class="button-logo d-flex me-4 ">
+        <a href="/forum/<%= forum.slug %>" class="text-reset">
+          <i class="bi bi-chat-left-text"></i>
+        </a>
+        <p class="ms-2"><%= forum.comment.length %></p>
+      </div>
+      <!-- <div
+        class="button-logo d-flex me-4 forum-id"
+        data-forumid="<%= forum._id %>"
+      >
+      <i class="bi bi-bookmark-plus-fill bookmark-button <%= (forum.bookmark.map(user => user._id.toString()).includes(userId))? "":"d-none" %>"></i>
+      <i class="bi bi-bookmark-plus unbookmark-button <%= ( forum.bookmark.map(user => user._id.toString()).includes(userId))? "d-none":"" %>">%></i>
+      <p class="bookmark-count ms-2"
+        ><%= forum.bookmark.length  %></p
+      >   
+      </div> -->
+
+
+    </div>
+
+
+
+
+  </div>
+  <% }) %>
+</div>

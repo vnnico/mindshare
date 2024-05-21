@@ -1,0 +1,54 @@
+<div class="header position-fix z-2">
+  <div class="nav">
+    <div class="search">
+      <input type="text" placeholder="Search..." class="text-white" />
+    </div>
+    <div class="button-list">
+      <% if (!currentUser) { %>
+
+      <a
+        type="button"
+        class="btn btn-outline-light rounded-3 ms-3"
+        href="/user/login"
+      >
+        Login
+      </a>
+      <a
+        type="button"
+        class="btn btn-outline-light rounded-3 ms-3"
+        href="/user/register"
+      >
+        Register
+      </a>
+      <% } %> <% if (currentUser) { %>
+      <div class="btn-group mb-3">
+        <button
+          class="btn ms-1"
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+          style="
+            --bs-btn-padding-y: 0.75rem;
+            --bs-btn-padding-x: 0.4rem;
+            --bs-btn-font-size: 2rem;
+          "
+        >
+          <i class="bi bi-person-circle text-white"></i>
+        </button>
+        <ul class="dropdown-menu">
+          <li><a href="/user/profile" class="dropdown-item">Profile</a></li>
+          <li><a href="/user/logout" class="dropdown-item">Log Out</a></li>
+        </ul>
+        <a href="/user/profile" class="text-white text-decoration-none">
+          <div class="d-flex mt-4">
+            <p class="md text-white"><%= currentUser.name %></p>
+            <% if (currentUser.role && currentUser.role === "verify") { %>
+            <i class="bi bi-patch-check-fill mt-1 text-primary ms-2"></i>
+            <% } %>
+          </div>
+        </a>
+      </div>
+      <% } %>
+    </div>
+  </div>
+</div>

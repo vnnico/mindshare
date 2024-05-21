@@ -1,0 +1,146 @@
+<%- layout('layouts/app') %>
+
+<div class="content position-relative d-flex flex-column pb-5 mb-5">
+
+  <h1 class="mt-4">ess</h1>
+
+  <div class="m-4 ms-4 px-2">
+    <a href="/forum" class="btn md back"><i class="bi bi-arrow-left-square"></i></a>
+  </div>
+  <div class="card px-2 m-5 mb-2 mt-2 shadow ">
+    <div class="card-body pb-5">
+      <div class="profile-container d-flex mb-2">
+        <div class="img-container">
+          <% if (forum.author.image && forum.isAnonymous === false) { %>
+            <img src="/uploads/<%= forum.author.image %>" class="img-thumbnail img-fluid circle-img" alt="..." class="">
+            <% } else { %>
+              
+              <img src="/img/profile-1.jpg" class="img-thumbnail img-fluid circle-img" alt="..." class="">
+
+            <% } %>
+        </div>
+
+        <h6 class="m-2 mt-3">
+          <%= forum.isAnonymous? "Anonymous": forum.author.name %>
+          <% if (forum.author.role && forum.author.role === "verify" && !forum.isAnonymous) { %>
+            <i class="bi bi-patch-check-fill mt-1 text-primary ms-2"></i>
+        <% } %>
+        </h6>
+
+        <p class="sm ms-auto mt-1 text-secondary date mt-3"><%= forum.created_at.toLocaleDateString("id-ID", {day: "numeric",
+          month:"long", year:"numeric"}) %></p>
+
+        <% if (forum.author._id.toString() === userId) { %>
+          <div class="btn-group mb-3">
+            <button class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-three-dots-vertical fw-bold"></i>
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                <form action="/forum/<%= forum._id %>/edit" method="GET" class="dropdown-item ms-0">
+                <button class="btn">Edit</button>
+                </form>
+              </li>
+              <li>
+                <form action="/forum/<%= forum._id %>/delete?_method=DELETE" method="POST" class="dropdown-item">
+                  <button class="btn" onclick="return confirm('Are You Sure')">Delete</button></form>
+              </li>
+            </ul>
+          </div>
+
+          <% } %>
+
+        <!-- <i class="bi bi-patch-check-fill mt-1 text-primary"></i> -->
+      </div>
+      <h4 class="card-title fw-bold"><%= forum.title %></h4>
+      <p class="card-text"><%= forum.description %></p>
+    </div>
+
+    <% if (forum.image.length >= 1) { %>
+
+
+        <img src="/uploads/<%= forum.image[0]%>" class="card-img-top " alt="" />
+        
+    <% } %>
+
+    <div class="button-post d-flex p-3">
+      <div
+        class="button-logo d-flex me-4 forum-id"
+        data-forumid="<%= forum._id %>"
+      >
+      <i class="bi bi-heart-fill like-button text-danger <%= (forum.liked_by.map(user => user._id.toString()).includes(userId))? "":"d-none" %>"></i>
+      <i class="bi bi-heart unlike-button <%= ( forum.liked_by.map(user => user._id.toString()).includes(userId))? "d-none":"" %>">%></i>
+      <p class="like-count ms-2"
+        ><%= forum.liked_by.length  %></p
+      >   
+      </div>
+
+      <div class="button-logo d-flex me-4">
+            <i class="bi bi-chat-left-text comment-class"></i>
+        <p class="ms-2"><%= forum.comment.length %></p>
+      </div>
+      <!-- <div class="button-logo d-flex me-4">
+        <i class="bi bi-bookmark-plus"></i>
+        <p class="ms-2">55</p>
+      </div> -->
+
+    </div>
+    <div class="d-flex mb-4 gap-2">
+      <div class="img-container mt-0">
+        <% if (user.image) { %>
+          <img src="/uploads/<%= user.image %>" class="img-thumbnail img-fluid circle-img" alt="..." class="">
+          <% } else { %>
+            
+            <img src="/img/profile-1.jpg" class="img-thumbnail img-fluid circle-img" alt="..." class="">
+
+          <% } %>
+      </div>
+
+      <form action="/forum/<%= forum._id %>/comment" method="POST" class="w-100 ">       
+        <div class="w-100 d-flex ">
+            <textarea class="form-control auto-resize w-100 border-0  comment-form mt-2" placeholder="Tulis Komentar disini..." rows="1" name="comment"></textarea>
+
+            <button class="btn btn-sm m-0" type="submit">
+               <i class="bi bi-send md"></i>
+            </button>
+        </div>
+      </form>
+
+    </div>
+
+    <% forum.comment.forEach(comment => { %>
+     
+        <div class="d-flex mb-4">
+            <div class="img-container">
+              <% if (comment.author.image) { %>
+                <img src="/uploads/<%= comment.author.image %>" class="img-thumbnail img-fluid circle-img" alt="..." class="">
+                <% } else { %>
+                  
+                  <img src="/img/profile-1.jpg" class="img-thumbnail img-fluid circle-img" alt="..." class="">
+    
+                <% } %>
+             </div>
+
+             <div class="container">
+                 <p class="sm mt-2 bold-author"><%= comment.author.name %>
+                
+                  <% if (comment.author.role && comment.author.role === "verify") { %>
+                    <i class="bi bi-patch-check-fill mt-1 text-primary ms-2"></i>
+                <% } %>
+                </p>
+                 <p class="card-text"><%= comment.body %></p>
+        
+             </div>
+             <% if (comment.author._id.toString() === userId) { %>
+              <form action="/forum/<%= forum._id %>/comment/<%= comment._id %>/delete?_method=DELETE" method="POST">
+               <button class="btn btn-sm btn-danger mb-2" onclick="return confirm('Are You Sure?')"><i class="bi bi-trash"></i></button>
+             </form>
+             <% } %>
+
+
+    
+     
+        </div>
+    <% }) %>
+
+</div>

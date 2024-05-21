@@ -1,0 +1,45 @@
+<%- layout('layouts/app') %>
+
+<div class="content position-relative d-flex flex-column ">
+  <div class="container mt-1">
+    <div class="row m-5">
+      <div class="column mt-5">
+        <p class="md">Create Forum</p>
+      </div>
+      <div class="column mt-3 forum p-4 shadow rounded-4">
+        <form action="/forum/create" method="POST" class="mt-4" enctype="multipart/form-data">
+          <div class="mb-3 row">
+            <label for="title" class="col-auto col-form-label">
+              <p class="sm">Title</p>
+            </label>
+            <div class="col-sm-10">
+              <input type="text" id="title" name="title" class="form-control" />
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="description" class="col-auto col-form-label"></label>
+              <p class="sm">Description</p>
+            </label>
+            <textarea name="description" id="description" class="form-control " rows="8" cols="30" minlength="10" maxlength="1000"></textarea>
+          </div>
+
+          <div class="mb-3 row">
+            <input type="file" class="form-control" name="images" multiple>
+          </div>
+
+          <div class="mb-3 row">
+            <label for="isAnonymous" class="col-auto col-form-label d-flex gap-3">
+                <p class="sm">Post as Anonymous</p>
+                <input type="checkbox" id="isAnonymous" name="isAnonymous" class="form-check-input border-2" />
+            </label>
+            </div>
+            <div>
+              <button type="submit" class="btn btn-create rounded-3  ">POST</button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

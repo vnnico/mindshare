@@ -1,0 +1,88 @@
+<%- layout('layouts/app') %>
+
+<div class="content position-relative d-flex flex-column">
+  <div class="container mt-1">
+    <div class="row m-5">
+      <div class="column mt-5">
+        <p class="md mt-3">My Profile</p>
+      </div>
+      <div class="column mt-3 forum p-4 shadow rounded-4">
+        <form action="/user/profile?_method=PUT" method="POST" class="mt-4" enctype="multipart/form-data">
+          <div class="mb-2 row">
+            <div class="d-flex">
+
+              <div class="profile-picture">
+                <% if (user.image) { %>
+                 
+                  <img src="/uploads/<%= user.image %>" class="img-thumbnail img-fluid circle-img" alt="..." class="">
+                  <% } else { %>
+                    
+                    <img src="/img/profile-1.jpg" class="img-thumbnail img-fluid circle-img" alt="..." class="">
+
+                  <% } %>
+              </div>
+              <div class="col-sm-10 m-auto d-flex">
+                <div class="name-box d-flex">
+                  <p class="md"><%= user.name %></p>
+                  <% if (user.role && user.role === "verify") { %>
+                    <i class="bi bi-patch-check-fill mt-1 text-primary ms-2"></i>
+                  <% } %>
+                </div>
+                <input type="text" id="name" name="name" class="form-control-plaintext visually-hidden" value="<%= user.name %>" readonly/>
+              </div>
+            </div>
+          </div>
+          <div class="mb-2 row">
+            <input type="file" name="profile" class="form-control profile-input visually-hidden" >
+          </div>
+          <div class="mb-2 row">
+            <label for="email" class="col-auto col-form-label">
+              <p class="sm">Email :</p>
+            </label>
+            <div class="col-sm-10">
+              <input type="email" id="email" name="email" class="form-control-plaintext email" value="<%= user.email %>" readonly/>
+            </div>
+          </div>
+          <div class="mb-2 row">
+            <label for="date" class="col-auto col-form-label">
+              <p class="sm">Tanggal Lahir : </p>
+            </label>
+            <div class="col-sm-10">
+              <input type="date" id="date" name="date" class="form-control-plaintext" value="<%= date %>" readonly/>
+            </div>
+          </div>
+          <div class="mb-2 row">
+            <label for="phone" class="col-auto col-form-label">
+              <p class="sm">No Handphone :</p>
+            </label>
+            <div class="col-sm-10">
+              <input type="text" id="phone" name="phone" class="form-control-plaintext" value="<%= user.phone %>" readonly />
+            </div>
+          </div>
+
+          <div class="ms-auto">
+              <button type="button" class="btn text-white rounded-3 btn-warning button-edit">EDIT</button>
+              <button type="submit" class="btn text-white rounded-3 btn-success button-submit visually-hidden">UPDATE</button>
+          </div>
+            
+          </form>
+          
+          <% if (!user.role) { %>
+
+            <div class="mt-3 body">
+
+              <p class="sm">Would you like to have a verified account?</p>
+
+              <form action="/user/verify?_method=PUT" method="POST">
+                <input type="submit" value="Verify" class="btn btn-sm btn-create me-2" name="verify" onclick="return confirm('Are You Sure?')">
+                <button type="button" class="btn btn-sm btn-success" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Your expertise can make a significant difference. By sharing your knowledge, you help guide individuals towards better mental health practices and provide support to those in need.">
+                  <i class="bi bi-question-circle-fill"></i>
+                </button>
+              </form>
+            </div>
+            <% } %>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
