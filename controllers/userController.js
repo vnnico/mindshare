@@ -123,6 +123,7 @@ const verify = async (req, res, next) => {
   const currentUser = res.locals.user ? res.locals.user : null;
   const id = res.locals.user ? res.locals.user.id : null;
   const verify = req.body.verify ? "verify" : null;
+
   try {
     const user = await User.findById(id);
     if (!user) {
@@ -131,11 +132,8 @@ const verify = async (req, res, next) => {
     }
 
     if (verify) {
-      const userUpdateRole = await User.findByIdAndUpdate(
-        id,
-        { role: verify },
-        { new: true }
-      );
+      await User.findByIdAndUpdate(id, { role: verify }, { new: true });
+
       res.redirect("/user/profile");
     }
   } catch (error) {
