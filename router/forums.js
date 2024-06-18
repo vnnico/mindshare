@@ -7,6 +7,9 @@ import {
   like,
   unlike,
   getForum,
+  getMyForum,
+  getMostLikeForum,
+  getMostCommentForum,
   comment,
   editForumPage,
   editForum,
@@ -17,8 +20,9 @@ import upload from "../middleware/upload.js";
 const router = express.Router();
 
 router.get("/", checkUser, getAllForum);
-// router.get("/mostLike", checkUser, getLikeForum);
-// router.get("/mostComment", checkUser, getCommentForum);
+router.get("/mostLike", checkUser, getMostLikeForum);
+router.get("/mostComment", checkUser, getMostCommentForum);
+router.get("/myForum", checkUser, getMyForum);
 
 router.get("/create", checkUser, getCreate);
 router.post("/create", checkUser, upload.array("images", 5), create);
