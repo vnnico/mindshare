@@ -4,7 +4,6 @@ import User from "../models/user.js";
 
 const getAllForum = async (req, res, next) => {
   const currentUser = res.locals.user ? res.locals.user : null;
-  console.log(currentUser + "ini");
   const id = res.locals.user ? res.locals.user.id : null;
   let userId = null;
   if (id) {
@@ -51,6 +50,136 @@ const getForum = async (req, res, next) => {
 
   res.render("show", { forum, userId, currentUser, user });
 };
+
+const getMyForum = async (req, res, next) => {
+  const currentUser = res.locals.user ? res.locals.user : null;
+  const id = res.locals.user ? res.locals.user.id : null;
+  let userId = null;
+  if (id) {
+    userId = id.toString();
+  }
+
+  const user = await User.findById(id);
+
+  const forums = await Forum.find({ author: id })
+    .populate("author")
+    .populate({
+      path: "comment",
+      populate: {
+        path: "author",
+      },
+    })
+    .populate("liked_by")
+    .sort({ createdAt: "desc" });
+
+  res.render("index", {
+    forums,
+    currentUser,
+    userId,
+    user,
+  });
+};
+
+const getMostLikeForum = async (req, res, next) => {
+  const currentUser = res.locals.user ? res.locals.user : null;
+  const id = res.locals.user ? res.locals.user.id : null;
+  let userId = null;
+  if (id) {
+    userId = id.toString();
+  }
+
+  const user = await User.findById(id);
+
+  const forums = await Forum.aggregate([
+    {
+      $addFields: {
+        likedByCount: { $size: "$liked_by" },
+      },
+    },
+    {
+      $sort: { likedByCount: -1 },
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "author",
+        foreignField: "_id",
+        as: "author",
+      },
+    },
+    {
+      $unwind: "$author",
+    },
+    {
+      $lookup: {
+        from: "comments",
+        localField: "comment",
+        foreignField: "_id",
+        as: "comment",
+      },
+    },
+    {
+      $unwind: {
+        path: "$comment",
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "comment.author",
+        foreignField: "_id",
+        as: "comment.author",
+      },
+    },
+    {
+      $unwind: {
+        path: "$comment.author",
+        preserveNullAndEmptyArrays: true,
+      },
+    },
+  ]);
+
+  res.render("index", {
+    forums,
+    currentUser,
+    userId,
+    user,
+  });
+};
+
+const getMostCommentForum = async (req, res, next) => {
+  const currentUser = res.locals.user ? res.locals.user : null;
+  const id = res.locals.user ? res.locals.user.id : null;
+  let userId = null;
+  if (id) {
+    userId = id.toString();
+  }
+
+  const user = await User.findById(id);
+
+  // Mengambil semua forum
+  const forums = await Forum.find({})
+    .populate("author")
+    .populate({
+      path: "comment",
+      populate: {
+        path: "author",
+      },
+    })
+    .populate("liked_by");
+
+  // Mengurutkan forum berdasarkan jumlah komentar
+  forums.sort((a, b) => b.comment.length - a.comment.length);
+
+  res.render("index", {
+    forums,
+    currentUser,
+    userId,
+    user,
+  });
+};
+
 const getCreate = (req, res, next) => {
   const currentUser = res.locals.user ? res.locals.user : null;
   const id = res.locals.user ? res.locals.user.id : null;
@@ -287,12 +416,15 @@ const deleteForum = async (req, res, next) => {
 };
 
 export {
+  getForum,
   getAllForum,
+  getMyForum,
+  getMostLikeForum,
+  getMostCommentForum,
   getCreate,
   create,
   like,
   unlike,
-  getForum,
   comment,
   editForumPage,
   editForum,
