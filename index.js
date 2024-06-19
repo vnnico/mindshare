@@ -10,6 +10,8 @@ import userRoute from "./router/users.js";
 import forumRoute from "./router/forums.js";
 import articleRoute from "./router/articles.js";
 
+import checkUser from "./middleware/checkUser.js";
+
 const app = express();
 // mongoose
 //   .connect("mongodb://127.0.0.1:27017/mindshare")
@@ -59,9 +61,15 @@ app.use("/user", userRoute);
 app.use("/forum", forumRoute);
 app.use("/article", articleRoute);
 
-// app.get("/", async (req, res) => {
-//   res.render("index");
-// });
+app.use(checkUser, (req, res, next) => {
+  const currentUser = res.locals.user ? res.locals.user : null;
+  const id = res.locals.user ? res.locals.user.id : null;
+  let userId = null;
+  if (id) {
+    userId = id.toString();
+  }
+  res.status(404).render("notfound", { currentUser });
+});
 app.listen(3000, () => {
   console.log("listening on http://localhost:3000");
 });

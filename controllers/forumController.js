@@ -48,6 +48,11 @@ const getForum = async (req, res, next) => {
     })
     .populate("liked_by");
 
+  if (!forum) {
+    res.render("notfound", { currentUser });
+    return;
+  }
+
   res.render("show", { forum, userId, currentUser, user });
 };
 
