@@ -81,71 +81,102 @@ const getMyForum = async (req, res, next) => {
 };
 
 const getMostLikeForum = async (req, res, next) => {
-  const currentUser = res.locals.user ? res.locals.user : null;
-  const id = res.locals.user ? res.locals.user.id : null;
-  let userId = null;
-  if (id) {
-    userId = id.toString();
+  try {
+    const currentUser = res.locals.user ? res.locals.user : null;
+    const id = res.locals.user ? res.locals.user.id : null;
+    let userId = null;
+    if (id) {
+      userId = id.toString();
+    }
+
+    const user = await User.findById(id);
+
+    const forums = await Forum.aggregate([
+      {
+        $addFields: {
+          likedByCount: { $size: "$liked_by" },
+          commentCount: { $size: "$comment" },
+        },
+      },
+      {
+        $sort: { likedByCount: -1 },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "author",
+          foreignField: "_id",
+          as: "author",
+        },
+      },
+      {
+        $unwind: "$author",
+      },
+      {
+        $lookup: {
+          from: "comments",
+          localField: "comment",
+          foreignField: "_id",
+          as: "comments",
+        },
+      },
+      {
+        $unwind: {
+          path: "$comments",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "comments.author",
+          foreignField: "_id",
+          as: "comments.author",
+        },
+      },
+      {
+        $unwind: {
+          path: "$comments.author",
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $group: {
+          _id: "$_id",
+          title: { $first: "$title" },
+          image: { $first: "$image" },
+          description: { $first: "$description" },
+          slug: { $first: "$slug" },
+          created_at: { $first: "$created_at" },
+          author: { $first: "$author" },
+          liked_by: { $first: "$liked_by" },
+          comments: { $push: "$comments" },
+          likedByCount: { $first: "$likedByCount" },
+          bookmark: { $first: "$bookmark" },
+          isAnonymous: { $first: "$isAnonymous" },
+        },
+      },
+      {
+        $sort: { likedByCount: -1 },
+      },
+    ]);
+
+    // Pastikan comments adalah array yang valid
+    forums.forEach((forum) => {
+      forum.comment = forum.comments.filter(
+        (comment) => comment && comment._id
+      );
+    });
+
+    res.render("index", {
+      forums,
+      currentUser,
+      userId,
+      user,
+    });
+  } catch (error) {
+    next(error);
   }
-
-  const user = await User.findById(id);
-
-  const forums = await Forum.aggregate([
-    {
-      $addFields: {
-        likedByCount: { $size: "$liked_by" },
-      },
-    },
-    {
-      $sort: { likedByCount: -1 },
-    },
-    {
-      $lookup: {
-        from: "users",
-        localField: "author",
-        foreignField: "_id",
-        as: "author",
-      },
-    },
-    {
-      $unwind: "$author",
-    },
-    {
-      $lookup: {
-        from: "comments",
-        localField: "comment",
-        foreignField: "_id",
-        as: "comment",
-      },
-    },
-    {
-      $unwind: {
-        path: "$comment",
-        preserveNullAndEmptyArrays: true,
-      },
-    },
-    {
-      $lookup: {
-        from: "users",
-        localField: "comment.author",
-        foreignField: "_id",
-        as: "comment.author",
-      },
-    },
-    {
-      $unwind: {
-        path: "$comment.author",
-        preserveNullAndEmptyArrays: true,
-      },
-    },
-  ]);
-
-  res.render("index", {
-    forums,
-    currentUser,
-    userId,
-    user,
-  });
 };
 
 const getMostCommentForum = async (req, res, next) => {
