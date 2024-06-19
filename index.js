@@ -8,6 +8,7 @@ import methodOverride from "method-override";
 
 import userRoute from "./router/users.js";
 import forumRoute from "./router/forums.js";
+import articleRoute from "./router/articles.js";
 
 const app = express();
 // mongoose
@@ -56,6 +57,7 @@ app.use(flash());
 
 app.use("/user", userRoute);
 app.use("/forum", forumRoute);
+app.use("/article", articleRoute);
 
 // app.get("/", async (req, res) => {
 //   res.render("index");

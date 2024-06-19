@@ -8,6 +8,32 @@
         <a href="/forum" class="text-reset text-decoration-none">MindShare</a>
       </h4>
     </div>
+    <% if (currentUser.role === "verify") { %>
+
+    <div class="acc-list me-3">
+      <div class="border-container d-flex gap-3 justify-content-center">
+        <i class="bi bi-plus-square-fill mt-1"></i>
+        <p class="sm mt-1 d-none d-sm-block">
+          <a
+            href="/forum/create"
+            class="text-decoration-none text-white sm mt-1"
+            >CREATE FORUM</a
+          >
+        </p>
+      </div>
+      <div class="border-container d-flex gap-3 justify-content-center">
+        <i class="bi bi-plus-square-fill mt-1"></i>
+        <p class="sm mt-1 d-none d-sm-block">
+          <a
+            href="/article/create"
+            class="text-decoration-none text-white sm mt-2"
+          >
+            CREATE ARTICLE
+          </a>
+        </p>
+      </div>
+    </div>
+    <% } else { %>
     <div class="acc-list me-3">
       <div class="border-container d-flex gap-3 justify-content-center">
         <i class="bi bi-plus-square-fill mt-1"></i>
@@ -19,11 +45,8 @@
           >
         </p>
       </div>
-      <div class="border-container d-flex gap-3 justify-content-center">
-        <i class="bi bi-bookmark-fill mt-1"></i>
-        <p class="sm mt-1 d-none d-sm-block">SAVED</p>
-      </div>
     </div>
+    <% } %>
     <div class="main-list d-flex flex-column mt-3">
       <div class="list-name d-flex gap-2 mb-1">
         <i class="bi bi-house-door-fill"></i>
@@ -33,16 +56,30 @@
       </div>
       <div class="list-name d-flex gap-2 mb-1">
         <i class="bi bi-book"></i>
-        <p class="sm mb-1 d-none d-sm-block">Article</p>
+        <p class="sm mb-1 d-none d-sm-block">
+          <a href="/article" class="text-decoration-none text-white"
+            >Articles</a
+          >
+        </p>
       </div>
       <div class="list-name d-flex gap-2">
-        <i class="bi bi-file-earmark-post"></i>
-        <p class="sm d-none d-sm-block">
+        <i class="bi bi-file-text"></i>
+        <p class="sm mb-2 d-none d-sm-block">
           <a href="/forum/myForum" class="text-decoration-none text-white"
             >My Forum</a
           >
         </p>
       </div>
+      <% if (currentUser.role === "verify") { %>
+      <div class="list-name d-flex gap-2">
+        <i class="bi bi-file-earmark-post"></i>
+        <p class="sm d-none d-sm-block">
+          <a href="/article/myArticle" class="text-decoration-none text-white"
+            >My Article</a
+          >
+        </p>
+      </div>
+      <% } %>
     </div>
     <div class="line"></div>
 
