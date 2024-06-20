@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import User from "./user.js";
 
-import marked from "marked";
+import { marked } from "marked";
 import slugify from "slugify";
 import createDomPurify from "dompurify";
 import { JSDOM } from "jsdom";
@@ -13,9 +13,13 @@ const articleSchema = new Schema({
     type: String,
     required: true,
   },
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
   image: {
     type: String,
-    required: false,
+    required: true,
   },
   description: {
     type: String,
