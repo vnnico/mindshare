@@ -227,9 +227,6 @@ const create = async (req, res, next) => {
   const userID = res.locals.user.id;
   const files = req.files;
 
-  console.log(body);
-  console.log(files);
-
   const image = files.map((file) => file.filename);
 
   const forum = new Forum({

@@ -1,5 +1,88 @@
 <%- layout('layouts/app') %>
 
 <div class="content position-relative d-flex flex-column">
-  <h1>-</h1>
+
+  <% if (articles.length > 0) { %>
+   
+    <h1>-</h1>
+    <h1>-</h1>
+    <div class="column ms-5">
+      <p class="md">All Articles</p>
+    </div>
+  
+    <% articles.forEach(article => { %>
+  
+    <div class="article-card px-0 m-5 my-3 mb-1 shadow d-flex flex-row">
+      <div class="image-section mb-0 me-4">
+        <div class="image-article">
+          <img src="/uploads/<%= article.image%>" class="card-img-top" alt="" />
+        </div>
+      </div>
+      <div class="article-body pb-5">
+        <div class="profile-container d-flex mb-2">
+          <p class="sm me-auto mt-1 text-secondary date mt-3">
+            <%= article.created_at.toLocaleDateString("id-ID", {day: "numeric",
+            month:"long", year:"numeric"}) %>
+          </p>
+  
+          <% if (article.author._id.toString() === userId) { %>
+          <div class="btn-group mb-3">
+            <button
+              class="btn"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <i class="bi bi-three-dots-vertical fw-bold"></i>
+            </button>
+            <ul class="dropdown-menu">
+              <li>
+                <form
+                  action="/article/<%= article._id %>/edit"
+                  method="GET"
+                  class="dropdown-item ms-0"
+                >
+                  <button class="btn">Edit</button>
+                </form>
+              </li>
+              <li>
+                <form
+                  action="/article/<%= article._id %>/delete?_method=DELETE"
+                  method="POST"
+                  class="dropdown-item"
+                >
+                  <button class="btn" onclick="return confirm('Are You Sure?')">
+                    Delete
+                  </button>
+                </form>
+              </li>
+            </ul>
+          </div>
+  
+          <% } %>
+        </div>
+  
+        <div class="article-forum" data-articleslug="<%= article.slug %>">
+          <h4 class="fw-bold"><%= article.title %></h4>
+          <p class="sm"><%= article.description %></p>
+        </div>
+      </div>
+    </div>
+    <% }) %>
+  <% } else {%>
+
+    <div class="container m-auto">
+      <div class="row m-5 text-center">
+        <div class="column mt-5">
+          <p class="md back fw-bold">Oops, No articles have been posted yet.</p>
+          <p class="md back">Start by creating a new one!</p>
+        </div>
+  
+  
+          </form>
+        </div>
+      </div>
+    <% } %>
+
+  </div>
 </div>

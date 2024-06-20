@@ -11,6 +11,19 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+  const articleCards = document.querySelectorAll(
+    ".article-forum[data-articleslug]"
+  );
+
+  articleCards.forEach((card) => {
+    card.addEventListener("click", () => {
+      const articleSlug = card.getAttribute("data-articleslug");
+      window.location.href = `/article/${articleSlug}`;
+    });
+  });
+});
+
 const unlikeButtons = document.querySelectorAll(".unlike-button");
 unlikeButtons.forEach((unlikeButton) => {
   unlikeButton.addEventListener("click", async function () {
