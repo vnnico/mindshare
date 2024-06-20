@@ -13,14 +13,14 @@
               <p class="sm">Title</p>
             </label>
             <div class="col-sm-10">
-              <input type="text" id="title" name="title" class="form-control" value="<%= forum.title %>" />
+              <input type="text" id="title" name="title" class="form-control" value="<%= forum.title %>" minlength="10" maxlength="100" required />
             </div>
           </div>
           <div class="mb-3 row">
             <label for="description" class="col-auto col-form-label"></label>
               <p class="sm">Description</p>
             </label>
-            <textarea name="description" id="description" class="form-control " rows="8" cols="30" minlength="10" maxlength="1000"><%= forum.description %></textarea>
+            <textarea name="description" id="description" class="form-control " rows="8" cols="30" minlength="10" maxlength="1000" required><%= forum.description %></textarea>
           </div>
 
           <div class="mb-3 row">
