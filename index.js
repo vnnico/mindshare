@@ -1,5 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
+import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import flash from "connect-flash";
 import session from "express-session";
@@ -12,21 +13,12 @@ import articleRoute from "./router/articles.js";
 
 import checkUser from "./middleware/checkUser.js";
 
+dotenv.config();
 const app = express();
-// mongoose
-//   .connect("mongodb://127.0.0.1:27017/mindshare")
-//   .then(() => {
-//     console.log("Connected to MongoDB");
-//   })
-//   .catch((error) => {
-//     console.error("MongoDB connection error:", error);
-//   });
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(
-      "mongodb+srv://MindShare:mindshare@mindshare.ees2oeh.mongodb.net/mindshare?retryWrites=true&w=majority&appName=MindShare"
-    );
+    await mongoose.connect(process.env.MONGODB_URI);
     console.log("database connected successfully");
   } catch (error) {
     console.log("database is not connected" + error);
