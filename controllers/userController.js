@@ -27,17 +27,27 @@ const loginController = async (req, res, next) => {
     if (user) {
       const token = generateToken(user._id);
       res.cookie("jwt", token, { httpOnly: true, maxAge: maxAge * 1000 });
-      console.log("berhasil login");
       res.redirect("/forum");
     }
   } catch (err) {
-    console.log(err.message);
+    return res.status(400).send("Authentication failed");
     res.redirect("/user/login"); // sementara
   }
 };
 
 const registerController = async (req, res, next) => {
   const { name, email, password, dob, phone } = req.body;
+
+  const existingUserByName = await User.findOne({ name: name });
+  const existingUserByEmail = await User.findOne({ email: email });
+
+  if (existingUserByName) {
+    return res.status(400).send("Name is already taken");
+  }
+
+  if (existingUserByEmail) {
+    return res.status(400).send("Email is already registered");
+  }
   const user = new User({
     name,
     email,
