@@ -24,7 +24,6 @@ const getArticle = async (req, res, next) => {
   const currentUser = res.locals.user ? res.locals.user : null;
   const id = res.locals.user ? res.locals.user.id : null;
   const slug = req.params.slug;
-  console.log(slug);
   let userId = null;
   if (id) {
     userId = id.toString();
