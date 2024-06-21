@@ -13,12 +13,13 @@ import articleRoute from "./router/articles.js";
 
 import checkUser from "./middleware/checkUser.js";
 
-dotenv.config();
 const app = express();
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI);
+    await mongoose.connect(
+      "mongodb+srv://Mindshare1:Mindshare1@mindshare1.tdmdfjb.mongodb.net/Mindshare1?retryWrites=true&w=majority&appName=Mindshare1"
+    );
     console.log("database connected successfully");
   } catch (error) {
     console.log("database is not connected" + error);
