@@ -91,7 +91,7 @@ const updateProfile = async (req, res, next) => {
   const currentUser = res.locals.user ? res.locals.user : null;
   const id = res.locals.user ? res.locals.user.id : null;
   const { name, date, phone } = req.body;
-  const profileImage = req.file.filename ? req.file.filename : null;
+  const profileImage = req.file ? req.file.filename : null;
 
   try {
     const user = await User.findById(id);
